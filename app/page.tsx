@@ -1,6 +1,146 @@
 export default function Home() {
+  // SEO Structured Data
+  const orgInfo = {
+    name: "MedSpa BC",
+    legalName: "MedSpa BC Directory", 
+    url: "https://medspa-directory.vercel.app",
+    logo: "https://medspa-directory.vercel.app/logo.png",
+    sameAs: [
+      "https://facebook.com/medspabc",
+      "https://instagram.com/medspabc", 
+      "https://twitter.com/medspabc"
+    ]
+  }
+
+  const medspaItems = [
+    {
+      id: "vancouver-laser-skin-care",
+      name: "Vancouver Laser & Skin Care Centre",
+      url: "https://medspa-directory.vercel.app/medspa/vancouver-laser-skin-care",
+      image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
+      telephone: "+1-604-555-0123",
+      address: {
+        streetAddress: "1234 Robson Street",
+        addressLocality: "Vancouver",
+        addressRegion: "BC",
+        postalCode: "V6E 1A5",
+        addressCountry: "CA"
+      },
+      geo: {
+        latitude: 49.2827,
+        longitude: -123.1207
+      },
+      aggregateRating: {
+        ratingValue: 4.8,
+        reviewCount: 127
+      }
+    },
+    {
+      id: "project-skin-md",
+      name: "Project Skin MD",
+      url: "https://medspa-directory.vercel.app/medspa/project-skin-md",
+      image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=80",
+      telephone: "+1-604-555-0456",
+      address: {
+        streetAddress: "5678 West Broadway",
+        addressLocality: "Vancouver", 
+        addressRegion: "BC",
+        postalCode: "V6K 2E9",
+        addressCountry: "CA"
+      },
+      geo: {
+        latitude: 49.2636,
+        longitude: -123.1386
+      },
+      aggregateRating: {
+        ratingValue: 4.9,
+        reviewCount: 89
+      }
+    },
+    {
+      id: "first-ave-medical-spa",
+      name: "First Ave Medical Spa",
+      url: "https://medspa-directory.vercel.app/medspa/first-ave-medical-spa",
+      image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80",
+      telephone: "+1-604-555-0789",
+      address: {
+        streetAddress: "9012 First Avenue",
+        addressLocality: "Vancouver",
+        addressRegion: "BC", 
+        postalCode: "V7X 1M4",
+        addressCountry: "CA"
+      },
+      geo: {
+        latitude: 49.2746,
+        longitude: -123.1248
+      },
+      aggregateRating: {
+        ratingValue: 4.7,
+        reviewCount: 156
+      }
+    }
+  ]
+
+  // Sitewide Schema (Organization + WebSite)
+  const sitewideSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: orgInfo.name,
+    legalName: orgInfo.legalName,
+    url: orgInfo.url,
+    logo: orgInfo.logo,
+    sameAs: orgInfo.sameAs
+  }
+
+  const websiteSchema = {
+    "@context": "https://schema.org", 
+    "@type": "WebSite",
+    name: orgInfo.name,
+    url: orgInfo.url,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://medspa-directory.vercel.app/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+
+  // Directory Page Schema
+  const directorySchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage", 
+    name: "Medical Spa Directory - British Columbia",
+    url: "https://medspa-directory.vercel.app",
+    about: {
+      "@type": "Thing",
+      name: "Medical spas, aesthetics, health & beauty providers"
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      url: "https://medspa-directory.vercel.app",
+      itemListElement: medspaItems.map((item, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: item.url,
+        name: item.name,
+        image: item.image
+      }))
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      url: orgInfo.url,
+      name: orgInfo.name
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      {/* SEO Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([sitewideSchema, websiteSchema, directorySchema])
+        }}
+      />
       <nav className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/30 to-transparent">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           <div className="text-3xl font-bold text-white">
