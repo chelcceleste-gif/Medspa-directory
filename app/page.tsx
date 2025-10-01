@@ -1,68 +1,4 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { supabase } from './lib/supabase'
-
-interface MedSpa {
-  id: number
-  name: string
-  city: string
-  address: string
-  phone: string
-  website: string
-  description: string
-  treatments: string
-  price_range: string
-  image_url: string
-  featured: boolean
-}
-
 export default function Home() {
-  const router = useRouter()
-  const [allMedspas, setAllMedspas] = useState<MedSpa[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchCity, setSearchCity] = useState('')
-  const [searchTreatment, setSearchTreatment] = useState('All Treatments')
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-    
-    async function fetchMedSpas() {
-      try {
-        const { data, error } = await supabase
-          .from('medspas')
-          .select('*')
-          .order('created_at', { ascending: false })
-        
-        if (error) {
-          console.error('Supabase error:', error)
-        } else {
-          setAllMedspas(data || [])
-        }
-      } catch (err) {
-        console.error('Fetch error:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchMedSpas()
-  }, [])
-
-  const handleSearch = () => {
-    const params = new URLSearchParams()
-    if (searchCity) params.append('city', searchCity)
-    if (searchTreatment !== 'All Treatments') params.append('treatment', searchTreatment)
-    router.push(`/search?${params.toString()}`)
-  }
-
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>
-  }
-
   return (
     <div className="min-h-screen bg-white">
       <nav className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/30 to-transparent">
@@ -95,11 +31,7 @@ export default function Home() {
           <p className="text-lg mb-12 opacity-90">Connect with Top-Rated Med Spa Providers Across Canada</p>
           
           <div className="bg-white rounded-2xl shadow-2xl p-4 max-w-3xl w-full flex flex-col md:flex-row gap-4">
-            <select 
-              value={searchTreatment}
-              onChange={(e) => setSearchTreatment(e.target.value)}
-              className="flex-1 px-4 py-4 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-[#00CCC0] text-gray-700"
-            >
+            <select className="flex-1 px-4 py-4 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-[#00CCC0] text-gray-700">
               <option>All Treatments</option>
               <option>Botox</option>
               <option>Dermal Fillers</option>
@@ -111,14 +43,9 @@ export default function Home() {
             <input
               type="text"
               placeholder="City (Vancouver, Victoria...)"
-              value={searchCity}
-              onChange={(e) => setSearchCity(e.target.value)}
               className="flex-1 px-4 py-4 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-[#00CCC0] text-gray-700"
             />
-            <button 
-              onClick={handleSearch}
-              className="px-8 py-4 bg-[#00CCC0] text-white rounded-xl font-semibold hover:bg-[#00B8AC] transition"
-            >
+            <button className="px-8 py-4 bg-[#00CCC0] text-white rounded-xl font-semibold hover:bg-[#00B8AC] transition">
               Search
             </button>
           </div>
@@ -126,14 +53,14 @@ export default function Home() {
       </div>
 
       <div className="container mx-auto px-4 py-20 text-center">
-          <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">WELCOME TO MEDSPA BC</p>
+        <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">WELCOME TO MEDSPA BC</p>
         <h2 className="text-5xl font-bold text-gray-900 mb-6 max-w-4xl mx-auto leading-tight">
           A hand-picked, vetted network of Medical Spas you can trust
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 max-w-4xl mx-auto">
           <div>
-            <div className="text-5xl font-bold text-[#00CCC0] mb-2">{mounted ? allMedspas.length : 0}</div>
+            <div className="text-5xl font-bold text-[#00CCC0] mb-2">5</div>
             <div className="text-gray-600 uppercase tracking-wide text-sm">LOCATIONS</div>
           </div>
           <div>
@@ -154,32 +81,74 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {mounted && allMedspas.slice(0, 6).map((spa) => (
-            <div key={spa.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="relative h-48">
-                <Image 
-                  src={spa.image_url || '/placeholder-spa.svg'} 
-                  alt={spa.name}
-                  width={400}
-                  height={192}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white text-gray-700 text-sm font-semibold rounded-full">
-                    {spa.price_range}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{spa.name}</h3>
-                <p className="text-gray-600 mb-2">{spa.description}</p>
-                <p className="text-sm text-gray-500 mb-4">{spa.city}, BC</p>
-                <a href={spa.website} target="_blank" rel="noopener noreferrer" className="text-[#00CCC0] font-semibold hover:underline">
-                  Visit Website →
-                </a>
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
+            <div className="relative h-48">
+              <img 
+                src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" 
+                alt="Vancouver Laser & Skin Care Centre"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 left-4">
+                <span className="px-3 py-1 bg-white text-gray-700 text-sm font-semibold rounded-full">
+                  $$
+                </span>
               </div>
             </div>
-          ))}
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Vancouver Laser & Skin Care Centre</h3>
+              <p className="text-gray-600 mb-2">Professional laser treatments and skin care services</p>
+              <p className="text-sm text-gray-500 mb-4">Vancouver, BC</p>
+              <a href="#" className="text-[#00CCC0] font-semibold hover:underline">
+                Visit Website →
+              </a>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
+            <div className="relative h-48">
+              <img 
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=80" 
+                alt="Project Skin MD"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 left-4">
+                <span className="px-3 py-1 bg-white text-gray-700 text-sm font-semibold rounded-full">
+                  $$$
+                </span>
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Project Skin MD</h3>
+              <p className="text-gray-600 mb-2">Advanced dermatological treatments and cosmetic procedures</p>
+              <p className="text-sm text-gray-500 mb-4">Vancouver, BC</p>
+              <a href="#" className="text-[#00CCC0] font-semibold hover:underline">
+                Visit Website →
+              </a>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
+            <div className="relative h-48">
+              <img 
+                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80" 
+                alt="First Ave Medical Spa"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 left-4">
+                <span className="px-3 py-1 bg-white text-gray-700 text-sm font-semibold rounded-full">
+                  $$
+                </span>
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">First Ave Medical Spa</h3>
+              <p className="text-gray-600 mb-2">Comprehensive aesthetic treatments and wellness services</p>
+              <p className="text-sm text-gray-500 mb-4">Vancouver, BC</p>
+              <a href="#" className="text-[#00CCC0] font-semibold hover:underline">
+                Visit Website →
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
