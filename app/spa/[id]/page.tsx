@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import Image from 'next/image'
 import { supabase } from '../../lib/supabase'
 
 interface MedSpa {
@@ -75,13 +76,12 @@ export default function SpaDetailPage() {
 
       {/* Hero Image */}
       <div className="relative h-96 bg-gray-200">
-        <img
+        <Image
           src={spa.image_url || 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80'}
           alt={spa.name}
+          width={1200}
+          height={384}
           className="w-full h-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80'
-          }}
         />
       </div>
 

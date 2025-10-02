@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export default function Home() {
   // SEO Structured Data
   const orgInfo = {
@@ -223,9 +225,11 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
             <div className="relative h-48">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" 
                 alt="Vancouver Laser & Skin Care Centre"
+                width={600}
+                height={192}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-4 left-4">
@@ -246,9 +250,11 @@ export default function Home() {
 
           <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
             <div className="relative h-48">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=80" 
                 alt="Project Skin MD"
+                width={600}
+                height={192}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-4 left-4">
@@ -269,9 +275,11 @@ export default function Home() {
 
           <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition">
             <div className="relative h-48">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80" 
                 alt="First Ave Medical Spa"
+                width={600}
+                height={192}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-4 left-4">
@@ -320,7 +328,7 @@ export default function Home() {
             Med<span className="text-[#00CCC0]">SPA</span>
           </div>
           <p className="text-gray-400">
-            Canada's trusted directory for medical spas and aesthetic treatments
+            Canada&apos;s trusted directory for medical spas and aesthetic treatments
           </p>
         </div>
       </footer>
